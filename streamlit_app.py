@@ -104,7 +104,7 @@ if st.session_state.output_df is not None:
 
             # ---- Feature names ----
             try:
-                feat_names = model.preprocess_pipe.get_feature_names_out()
+                feat_names = model.preprocess_pipe.get_feature_names_out().tolist()
             except Exception:
                 # Fallback to XGBoost's raw feature names or generic labels
                 feat_names = explainer.feature_names or [f"f_{i}" for i in range(len(vals))]
