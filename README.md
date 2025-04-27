@@ -1,7 +1,6 @@
 # AD_Prediction_IGP
 The following project is a practical application of the ML Model for AD Classification. The testing set structure goes as follows:
 
-                  20 non-null     int64  
  1   Gender                     20 non-null     int64  
  2   Ethnicity                  20 non-null     int64  
  3   EducationLevel             20 non-null     int64  
