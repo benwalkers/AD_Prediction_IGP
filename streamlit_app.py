@@ -131,32 +131,43 @@ if st.session_state.output_df is not None:
 
     if show_shap:
         try:
-            # preprocess the selected record only once
-            selected_raw = st.session_state.test_data.iloc[[record_idx]]
-            X_proc = model.preprocess_pipe.transform(selected_raw)
+            # ---- Preprocess selected row exactly as during training ----
+            raw_row = st.session_state.test_data.iloc[[record_idx]]
+            X_proc = model.preprocess_pipe.transform(raw_row)
 
-            # Use XGBoost part for SHAP (fast and tree‑based)
-            explainer = shap.Explainer(model.xgb_model)
-            shap_vals = explainer(X_proc)
+            # ---- TreeExplainer on XGBoost (fast & accurate) ----
+            explainer = shap.TreeExplainer(model.xgb_model)
+            shap_vals = explainer.shap_values(X_proc)
+            # shap_vals is (n_samples, n_features) for binary case
+            vals = shap_vals[0] if isinstance(shap_vals, list) else shap_vals.flatten()
 
-            vals = shap_vals[0].values
-            feat_names = model.preprocess_pipe.get_feature_names_out()
-            sort_idx = np.argsort(np.abs(vals))[::-1]
-            sorted_feats = feat_names[sort_idx]
-            sorted_vals = vals[sort_idx]
+            # ---- Feature names ----
+            try:
+                feat_names = model.preprocess_pipe.get_feature_names_out()
+            except Exception:
+                # Fallback to XGBoost's raw feature names or generic labels
+                feat_names = explainer.feature_names or [f"f_{i}" for i in range(len(vals))]
 
-            fig = go.Figure(go.Bar(
-                x=sorted_vals,
-                y=sorted_feats,
-                orientation='h',
-                marker_color=['green' if v > 0 else 'red' for v in sorted_vals]
-            ))
+            # ---- Sort by absolute impact ----
+            order = np.argsort(np.abs(vals))[::-1]
+            sorted_feats = np.array(feat_names)[order]
+            sorted_vals = vals[order]
+
+            # ---- Plotly bar chart (green=positive, red=negative impact) ----
+            fig = go.Figure(
+                go.Bar(
+                    x=sorted_vals,
+                    y=sorted_feats,
+                    orientation="h",
+                    marker_color=["green" if v > 0 else "red" for v in sorted_vals],
+                )
+            )
             fig.update_layout(
                 title=f"SHAP Contributions for Record {record_idx}",
-                xaxis_title="SHAP Value (Impact on Log‑Odds)",
+                xaxis_title="SHAP Value (Impact on Log-Odds)",
                 yaxis_title="Feature",
                 template="plotly_white",
-                height=650
+                height=650,
             )
             st.plotly_chart(fig, use_container_width=True)
         except Exception as e:
