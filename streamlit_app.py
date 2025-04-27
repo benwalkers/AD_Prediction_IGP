@@ -52,7 +52,7 @@ model = load_model()
 
 # --- App Layout ---
 st.set_page_config(page_title="Alzheimer's Disease Predictor - G15", layout="wide")
-st.markdown("<h1 style='text-align: center;'>🧠 Alzheimer's Disease Predictor - G15</h1>", unsafe_allow_html=True)
+st.title("🧠 Alzheimer's Disease Predictor - G15")
 st.write("Upload a CSV file with patient data to predict Alzheimer's Disease diagnosis.")
 
 uploaded_file = st.file_uploader("Choose your testing dataset (CSV format)", type=["csv"])
