@@ -1,5 +1,5 @@
 # AD_Prediction_IGP
-The following project is a practical application of the ML Model for AD Classification. The testing set structure goes as follows:
+The following project practically applies the ML Model for AD Classification. The testing set structure goes as follows:
 
  1   Gender                     20 non-null     int64  
  2   Ethnicity                  20 non-null     int64  
@@ -7,9 +7,13 @@ The following project is a practical application of the ML Model for AD Classifi
  4   BMI                        20 non-null     float64
  5   Smoking                    20 non-null     int64  
  6   AlcoholConsumption         20 non-null     float64
+ 
  7   PhysicalActivity           20 non-null     float64
- 8   DietQuality                20 non-null     float64
+ 
+ 8   DietQuality                20 non-null     float64 
+ 
  9   SleepQuality               20 non-null     float64
+ 
  10  FamilyHistoryAlzheimers    20 non-null     int64  
  11  CardiovascularDisease      20 non-null     int64  
  12  Diabetes                   20 non-null     int64  
