@@ -44,6 +44,12 @@ from stacked_model import StackedXGBFNN
 #         except Exception as e:
 #             st.error(f"Error during prediction: {e}")
 # Load your saved stacked model
+#--------------------------
+st.set_page_config(page_title="Alzheimer's Disease Predictor - G15", layout="wide")
+# st.title("🧠 Alzheimer's Disease Predictor - G15")
+st.markdown("<h1 style='text-align: center;'>🧠 Alzheimer's Disease Predictor - G15</h1>", unsafe_allow_html=True)
+st.write("Upload a CSV file with patient data to predict Alzheimer's Disease diagnosis.")
+#--------------------------
 @st.cache_resource
 def load_model():
     return StackedXGBFNN.load('models')
@@ -51,9 +57,6 @@ def load_model():
 model = load_model()
 
 # --- App Layout ---
-st.set_page_config(page_title="Alzheimer's Disease Predictor - G15", layout="wide")
-st.title("🧠 Alzheimer's Disease Predictor - G15")
-st.write("Upload a CSV file with patient data to predict Alzheimer's Disease diagnosis.")
 
 uploaded_file = st.file_uploader("Choose your testing dataset (CSV format)", type=["csv"])
 
