@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 #import shap
 import numpy as np
-import plotly.graph_objects as go
+#import plotly.graph_objects as go
 from stacked_model import StackedXGBFNN
 
 # Load your saved model
