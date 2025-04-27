@@ -101,7 +101,7 @@ if st.session_state.output_df is not None:
             shap_vals = explainer.shap_values(X_proc)
             # shap_vals is (n_samples, n_features) for binary case
             vals = shap_vals[0] if isinstance(shap_vals, list) else shap_vals.flatten()
-
+            st.markdown(model.preprocess_pipe.get_feature_names_out().tolist())
             # ---- Feature names ----
             try:
                 feat_names = model.preprocess_pipe.get_feature_names_out().tolist()
