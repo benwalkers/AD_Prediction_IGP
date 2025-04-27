@@ -95,10 +95,11 @@ if st.session_state.output_df is not None:
             # ---- Preprocess selected row exactly as during training ----
             raw_row = st.session_state.test_data.iloc[[record_idx]]
             X_proc = model.preprocess_pipe.transform(raw_row)
+            X_proc_df = pd.DataFrame(X_proc, columns= model.preprocess_pipe.get_feature_names_out().tolist())
 
             # ---- TreeExplainer on XGBoost (fast & accurate) ----
             explainer = shap.Explainer(model.xgb_model)
-            shap_vals = explainer.shap_values(X_proc)
+            shap_vals = explainer.shap_values(X_proc_df)
             # shap_vals is (n_samples, n_features) for binary case
             vals = shap_vals[0] if isinstance(shap_vals, list) else shap_vals.flatten()
             # ---- Feature names ----
